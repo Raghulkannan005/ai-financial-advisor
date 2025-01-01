@@ -30,8 +30,10 @@ const Nav: React.FC = () => {
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center">
-                        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="text-gray-600 hover:text-blue-600">
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="text-gray-600 hover:text-blue-600 flex items-center justify-center"
+                        >
                             {isMobileMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
                         </button>
                     </div>

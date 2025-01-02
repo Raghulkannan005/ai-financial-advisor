@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getFinancialAdvice } from '../api/huggingface';
-import { FinancialAdvice as FinancialAdviceType } from '../types';
+import { FinancialAdvice as FinancialAdviceType, Expense, Goal } from '../types';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 
-const FinancialAdvice: React.FC = () => {
+interface FinancialAdviceProps {
+  goals: Goal[];
+  expenses: Expense[];
+}
+
+const FinancialAdvice: React.FC<FinancialAdviceProps> = ({ goals = [], expenses = [] }) => {
   const [advice, setAdvice] = useState<FinancialAdviceType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +23,7 @@ const FinancialAdvice: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const generatedAdvice = await getFinancialAdvice(selectedCategory);
+      const generatedAdvice = await getFinancialAdvice(selectedCategory, goals, expenses);
       
       const newAdvice: FinancialAdviceType = {
         id: Date.now().toString(),

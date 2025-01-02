@@ -4,7 +4,6 @@ import { calculateGoalProgress } from '../utils/calculations';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiTarget, FiTrendingUp, FiCalendar, FiDollarSign, FiTrash2, FiEdit2 } from 'react-icons/fi';
-import CreateGoal from './CreateGoal';
 
 const GoalTracker: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -145,9 +144,6 @@ const GoalTracker: React.FC = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Add Goal Form */}
-      <CreateGoal onCreateGoal={handleCreateGoal} />
 
       {/* Goals List */}
       <div className="bg-white p-6 rounded-lg shadow-lg">

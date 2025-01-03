@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Expense, Goal } from '../types';
 
-const API_URL = 'https://api-inference.huggingface.co/models/distilgpt2';
+const API_URL = 'https://api-inference.huggingface.co/models/gpt2';
 const API_KEY = import.meta.env.VITE_HUGGINGFACE_API_KEY;
 
 export const getFinancialAdvice = async (prompt: string, goals: Goal[] = [], expenses: Expense[] = []) => {

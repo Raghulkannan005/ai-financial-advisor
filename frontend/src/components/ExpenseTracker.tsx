@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Expense } from '../types';
+import { Expense } from '../types/index';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 import Expenses from './Expenses';
 

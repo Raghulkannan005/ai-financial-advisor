@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Goal } from '../types';
+import { Goal } from "../types/index";
 import { calculateGoalProgress } from '../utils/calculations';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiTarget, FiTrendingUp, FiCalendar, FiDollarSign, FiTrash2, FiEdit2 } from 'react-icons/fi';
+import CreateGoal from './CreateGoal';
 
 const GoalTracker: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -16,6 +17,16 @@ const GoalTracker: React.FC = () => {
     const savedGoals = getFromLocalStorage('goals');
     if (savedGoals) setGoals(savedGoals);
   }, []);
+
+  const handleCreateGoal = (newGoal: Omit<Goal, 'id'>) => {
+    const goal: Goal = {
+      id: Date.now().toString(),
+      ...newGoal,
+    };
+    const updatedGoals = [...goals, goal];
+    setGoals(updatedGoals);
+    saveToLocalStorage('goals', updatedGoals);
+  };
 
   const updateProgress = (goalId: string, amount: number) => {
     const updatedGoals = goals.map(goal => {
@@ -135,7 +146,8 @@ const GoalTracker: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Goals List */}
+      
+
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Your Goals</h2>
@@ -233,7 +245,6 @@ const GoalTracker: React.FC = () => {
         </div>
       </div>
 
-      {/* Edit Modal */}
       {editingGoal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <motion.div
@@ -290,7 +301,6 @@ const GoalTracker: React.FC = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <motion.div

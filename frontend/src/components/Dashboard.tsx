@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Expenses from './Expenses';
 import GoalTracker from './GoalTracker';
 import FinancialAdvice from './FinancialAdvice';
-import { Expense, Goal } from '../types';
+import { Expense, Goal } from '../types/index';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 
 const Dashboard: React.FC = () => {

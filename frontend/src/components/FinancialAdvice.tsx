@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getFinancialAdvice } from '../api/huggingface';
-import { FinancialAdvice as FinancialAdviceType, Expense, Goal } from '../types';
+import { FinancialAdvice as FinancialAdviceType, Expense, Goal } from '../types/index';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 
 interface FinancialAdviceProps {

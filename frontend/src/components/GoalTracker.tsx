@@ -17,16 +17,6 @@ const GoalTracker: React.FC = () => {
     if (savedGoals) setGoals(savedGoals);
   }, []);
 
-  const handleCreateGoal = (newGoal: Omit<Goal, 'id'>) => {
-    const goal: Goal = {
-      id: Date.now().toString(),
-      ...newGoal,
-    };
-    const updatedGoals = [...goals, goal];
-    setGoals(updatedGoals);
-    saveToLocalStorage('goals', updatedGoals);
-  };
-
   const updateProgress = (goalId: string, amount: number) => {
     const updatedGoals = goals.map(goal => {
       if (goal.id === goalId) {

@@ -48,7 +48,7 @@ const Home: React.FC = () => {
                     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                             <div className="text-center">
-                                <div className="text-4xl font-bold text-blue-600">15K+</div>
+                                <div className="text-4xl font-bold text-blue-600">1K+</div>
                                 <div className="mt-2 text-gray-600">Financial Goals Set</div>
                             </div>
                             <div className="text-center">
@@ -111,13 +111,13 @@ const Home: React.FC = () => {
                             <div>
                                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
                                 <ul className="space-y-2 text-gray-400">
-                                    <li>support@wealthwise.com</li>
-                                    <li>1-800-WEALTH</li>
+                                    <li>raghulkannan005@gmail.com.com</li>
+                                    <li>9677605417</li>
                                 </ul>
                             </div>
                         </div>
                         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-                            <p>&copy; 2024 WealthWise. All rights reserved.</p>
+                            <p>&copy; 2025 WealthWise. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>

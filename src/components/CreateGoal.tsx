@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Goal } from '../types/index';
 import { FiTarget } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import GoalTracker from './GoalTracker'
-
-interface CreateGoalProps {
-  onCreateGoal: (goal: Omit<Goal, 'id'>) => void;
-}
+import GoalTracker from './GoalTracker';
+import { getFromLocalStorage, saveToLocalStorage } from '../utils/storage';
 
 const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
+  const [goals, setGoals] = useState<Goal[]>(() => {
+    const savedGoals = getFromLocalStorage('goals');
+    return savedGoals || [];
+  });
+  
   const [newGoal, setNewGoal] = useState({
     name: '',
     targetAmount: 0,
@@ -20,15 +22,28 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onCreateGoal(newGoal);
+    
+    // Create new goal with ID
+    const goalWithId = {
+      ...newGoal,
+      id: Date.now().toString()
+    };
+    
+    // Update local state
+    const updatedGoals = [...goals, goalWithId];
+    setGoals(updatedGoals);
+    saveToLocalStorage('goals', updatedGoals);
+    
+    // Reset form
     setNewGoal({ name: '', targetAmount: 0, currentAmount: 0, deadline: '', category: 'savings' });
   };
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-6 rounded-lg shadow-lg"
-    >
+    <div className="space-y-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white p-6 rounded-lg shadow-lg"
+      >
       <h2 className="text-2xl font-bold mb-6 flex items-center">
         <FiTarget className="mr-2" /> Add New Goal
       </h2>
@@ -41,6 +56,7 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
             onChange={(e) => setNewGoal({...newGoal, name: e.target.value})}
             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
+            placeholder='goal'
           />
         </div>
         
@@ -52,7 +68,7 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
             onChange={(e) => setNewGoal({...newGoal, targetAmount: parseFloat(e.target.value)})}
             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
-            min="0"
+            placeholder='0'
           />
         </div>
         
@@ -64,7 +80,7 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
             onChange={(e) => setNewGoal({...newGoal, currentAmount: parseFloat(e.target.value)})}
             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
-            min="0"
+            placeholder="0"
           />
         </div>
         
@@ -76,6 +92,7 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
             onChange={(e) => setNewGoal({...newGoal, deadline: e.target.value})}
             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             required
+            placeholder='dd/mm/yyyy'
           />
         </div>
         
@@ -83,16 +100,21 @@ const CreateGoal: React.FC<CreateGoalProps> = ({ onCreateGoal }) => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 
-                       transition-colors duration-200 flex items-center justify-center gap-2"
+            transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <FiTarget /> Create Goal
           </button>
         </div>
       </form>
-      <GoalTracker />
-
     </motion.div>
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <GoalTracker goals={goals} setGoals={setGoals} />
+      </motion.div>
+    </div>
   );
 };
-
 export default CreateGoal;

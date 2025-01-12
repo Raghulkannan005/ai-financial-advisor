@@ -18,6 +18,7 @@ const Nav: React.FC = () => {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
+                        <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
                         <Link to="/expenses" className="text-gray-600 hover:text-blue-600">Expenses</Link>
                         <Link to="/goals" className="text-gray-600 hover:text-blue-600">Goals</Link>
                         <Link to="/advice" className="text-gray-600 hover:text-blue-600">Advice</Link>
@@ -46,6 +47,9 @@ const Nav: React.FC = () => {
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         <Link to="/dashboard" className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md">
                             Dashboard
+                        </Link>
+                        <Link to="/" className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md">
+                            Home
                         </Link>
                         <Link to="/goals" className="block px-3 py-2 text-gray-600 hover:bg-blue-50 rounded-md">
                             Goals

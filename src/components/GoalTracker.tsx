@@ -1,22 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Goal } from "../types/index";
 import { calculateGoalProgress } from '../utils/calculations';
-import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
+import { saveToLocalStorage } from '../utils/storage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiTarget, FiTrendingUp, FiCalendar, FiDollarSign, FiTrash2, FiEdit2 } from 'react-icons/fi';
 
 
-const GoalTracker: React.FC = () => {
-  const [goals, setGoals] = useState<Goal[]>([]);
+interface GoalTrackerProps {
+  goals: Goal[];
+  setGoals: (goals: Goal[]) => void;
+}
+
+const GoalTracker: React.FC<GoalTrackerProps> = ({
+  goals = [],
+  setGoals
+}) => {
   const [sortBy, setSortBy] = useState('deadline');
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState<string>('');
 
-  useEffect(() => {
-    const savedGoals = getFromLocalStorage('goals');
-    if (savedGoals) setGoals(savedGoals);
-  }, []);
+  const totalTargetAmount = goals?.reduce((sum, goal) => sum + goal.targetAmount, 0) ?? 0;
+  const totalCurrentAmount = goals?.reduce((sum, goal) => sum + goal.currentAmount, 0) ?? 0;
+  const overallProgress = totalTargetAmount > 0 ? (totalCurrentAmount / totalTargetAmount) * 100 : 0;
+
+  const sortedGoals = [...(goals || [])].sort((a, b) => {
+    if (sortBy === 'deadline') {
+      return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+    }
+    if (sortBy === 'progress') {
+      return calculateGoalProgress(b) - calculateGoalProgress(a);
+    }
+    return 0;
+  });
 
   const updateProgress = (goalId: string, amount: number) => {
     const updatedGoals = goals.map(goal => {
@@ -26,7 +42,6 @@ const GoalTracker: React.FC = () => {
       return goal;
     });
     setGoals(updatedGoals);
-    saveToLocalStorage('goals', updatedGoals);
   };
 
   const deleteGoal = (goalId: string) => {
@@ -61,16 +76,6 @@ const GoalTracker: React.FC = () => {
     setShowDeleteModal(false);
     setGoalToDelete('');
   };
-
-  const totalTargetAmount = goals.reduce((sum, goal) => sum + goal.targetAmount, 0);
-  const totalCurrentAmount = goals.reduce((sum, goal) => sum + goal.currentAmount, 0);
-  const overallProgress = (totalCurrentAmount / totalTargetAmount) * 100 || 0;
-
-  const sortedGoals = [...goals].sort((a, b) => {
-    if (sortBy === 'deadline') return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
-    if (sortBy === 'progress') return calculateGoalProgress(b) - calculateGoalProgress(a);
-    return 0;
-  });
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-6">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Expenses from './Expenses';
 import GoalTracker from './GoalTracker';
 import FinancialAdvice from './FinancialAdvice';
-import { Expense, Goal } from '../types/index';
+import { Goal, Expense } from '../types';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 
 const Dashboard: React.FC = () => {
@@ -17,6 +17,10 @@ const Dashboard: React.FC = () => {
     if (savedGoals) setGoals(savedGoals);
   }, []);
 
+  const handleUpdateGoals = (newGoals: Goal[]) => {
+    setGoals(newGoals);
+    saveToLocalStorage('goals', newGoals);
+  };
   const deleteExpense = (id: string) => {
     const updatedExpenses = expenses.filter(expense => expense.id !== id);
     setExpenses(updatedExpenses);
@@ -34,7 +38,10 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4 text-gray-700">Goals</h2>
-            <GoalTracker />
+            <GoalTracker
+          goals={goals}
+          setGoals={handleUpdateGoals}
+        />
           </div>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md">

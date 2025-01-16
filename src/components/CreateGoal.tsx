@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Goal } from '../types/index';
 import { FiTarget } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+
+interface CreateGoalProps {
+  onCreateGoal: (goal: Omit<Goal, 'id'>) => void;
+}
 import GoalTracker from './GoalTracker';
 import { getFromLocalStorage, saveToLocalStorage } from '../utils/storage';
 

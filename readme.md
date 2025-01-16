@@ -47,7 +47,7 @@ The aim of this project is to democratize access to financial advisory services 
 1. **Clone the repository**:
 
      ```sh
-     git clone https://github.com/yourusername/ai-financial-advisor.git
+     git clone https://github.com/Raghulkannan005/ai-financial-advisor
      cd ai-financial-advisor
      ```
 

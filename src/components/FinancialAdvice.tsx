@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getFinancialAdvice } from '../api/huggingface';
+import { getFinancialAdvice } from '../api/gemini';
 import { FinancialAdvice as FinancialAdviceType, Expense, Goal } from '../types/index';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/storage';
 

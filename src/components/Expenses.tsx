@@ -28,6 +28,7 @@ interface ExpensesProps {
 }
 
 const Expenses: React.FC<ExpensesProps> = ({ expenses, onDeleteExpense }) => {
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('date');

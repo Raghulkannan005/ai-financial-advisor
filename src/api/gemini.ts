@@ -7,6 +7,7 @@ const MODEL_NAME = "gemini-1.5-pro";
 // Simple cache implementation
 const adviceCache = new Map();
 const CACHE_EXPIRY = 30 * 60 * 1000; // 30 minutes
+const MAX_CACHE_SIZE = 50;
 
 export const getFinancialAdvice = async (category: string = 'All', goals: Goal[] = [], expenses: Expense[] = []) => {
   try {
@@ -24,7 +25,6 @@ export const getFinancialAdvice = async (category: string = 'All', goals: Goal[]
     }
 
     // Prepare data for the API
-    // Format goal data clearly
     const goalsSummary = safeGoals.length > 0
       ? safeGoals.slice(0, 5).map(goal => 
           `Goal: ${goal.name}, Current: Rs.${goal.currentAmount}, Target: Rs.${goal.targetAmount}, Deadline: ${new Date(goal.deadline).toLocaleDateString('en-IN')}`).join('; ') 
@@ -71,6 +71,11 @@ Format your response in simple paragraphs without numbered lists.`;
       .replace(/^\d+\.\s/gm, "") // Remove numbered lists if they appear
       .trim();
 
+    if (adviceCache.size >= MAX_CACHE_SIZE) {
+      const oldestKey = Array.from(adviceCache.keys())[0];
+      adviceCache.delete(oldestKey);
+    }
+
     // Store the processed text in cache
     adviceCache.set(cacheKey, {
       advice: processedText,
@@ -78,6 +83,7 @@ Format your response in simple paragraphs without numbered lists.`;
     });
 
     return processedText;
+
   } catch (error: any) {
     const errorMessage = error.message || 'Unknown error occurred';
     console.error('Error fetching advice from Gemini:', error);
